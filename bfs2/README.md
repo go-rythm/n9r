@@ -157,3 +157,15 @@ func copyEdges(nodeSet nodeSet, mapping map[*UndirectedGraphNode]*UndirectedGrap
 }
 ```
 
+### 80% 的人都可能会写错的 BFS 算法
+
+![bfs-contrast](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220514003700.jpeg)
+
+如图，左右两种写法，唯一的区别是 node 放入 visited 的时机不同<br/>
+左边的是正确的，右边的是错误的，例子如下
+
+ ![bfs-wrong-case](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220514004714.png)
+
+可以看到延迟放入 visited 会导致 queue 中元素重复，当节点数量更多的时候，可想而知这种重复的情况会呈指数级的增长<br/>
+所以要牢记**访问过一个节点后，就要立即放入已访问的集合中**，这两步不能分开
+

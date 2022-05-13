@@ -16,15 +16,15 @@ func CloneGraph(node *UndirectedGraphNode) *UndirectedGraphNode {
 	if node == nil {
 		return nil
 	}
-	nodeSet := findNodesByBfs(node)
-	mapping := copyNodes(nodeSet)
-	copyEdges(nodeSet, mapping)
+	nodeSet := FindNodesByBfs(node)
+	mapping := CopyNodes(nodeSet)
+	CopyEdges(nodeSet, mapping)
 	return mapping[node]
 }
 
 type nodeSet map[*UndirectedGraphNode]bool
 
-func findNodesByBfs(node *UndirectedGraphNode) nodeSet {
+func FindNodesByBfs(node *UndirectedGraphNode) nodeSet {
 	queue := []*UndirectedGraphNode{node}
 	visited := nodeSet{
 		node: true,
@@ -36,14 +36,32 @@ func findNodesByBfs(node *UndirectedGraphNode) nodeSet {
 			if visited[neighbor] {
 				continue
 			}
-			queue = append(queue, neighbor)
 			visited[neighbor] = true
+			queue = append(queue, neighbor)
 		}
 	}
 	return visited
 }
 
-func copyNodes(nodeSet nodeSet) map[*UndirectedGraphNode]*UndirectedGraphNode {
+func FindNodesByBfsWrong(node *UndirectedGraphNode) nodeSet {
+	queue := []*UndirectedGraphNode{node}
+	visited := nodeSet{}
+	for len(queue) > 0 {
+		curNode := queue[0]
+		queue = queue[1:]
+		visited[curNode] = true
+		for _, neighbor := range curNode.Neighbors {
+			if visited[neighbor] {
+				continue
+			}
+			// visited[neighbor] = true
+			queue = append(queue, neighbor)
+		}
+	}
+	return visited
+}
+
+func CopyNodes(nodeSet nodeSet) map[*UndirectedGraphNode]*UndirectedGraphNode {
 	mapping := make(map[*UndirectedGraphNode]*UndirectedGraphNode)
 	for node := range nodeSet {
 		mapping[node] = &UndirectedGraphNode{
@@ -53,7 +71,7 @@ func copyNodes(nodeSet nodeSet) map[*UndirectedGraphNode]*UndirectedGraphNode {
 	return mapping
 }
 
-func copyEdges(nodeSet nodeSet, mapping map[*UndirectedGraphNode]*UndirectedGraphNode) {
+func CopyEdges(nodeSet nodeSet, mapping map[*UndirectedGraphNode]*UndirectedGraphNode) {
 	for node := range nodeSet {
 		newNode := mapping[node]
 		for _, neighbor := range node.Neighbors {
