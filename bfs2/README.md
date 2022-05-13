@@ -28,8 +28,8 @@
       b - -  c 
     ```
 
-    第一层节点 a
-    第二层节点 b c
+    第一层节点 a<br />
+    第二层节点 b c<br />
     对于a来说，存在路径a-c-b，b也可以是第三层的，这样b就进了两次队列
 
 * BFS中，为什么同一个节点不需要重复进入队列？
@@ -89,5 +89,71 @@ for len(queue) > 0 {
 }
 ```
 
-N个点，M条边，图上BFS时间复杂度 = O(N + M)，说是O(M)问题也不大，因为M一般都比N大 
-M最大是 O(N^2) 的级别(任意两个点之间都有边)， 所以最坏情况可能是 O(N^2)
+N个点，M条边，图上BFS时间复杂度 = O(N + M)，说是O(M)问题也不大，因为M一般都比N大<br/>
+M最大是 O(N^2) 的级别(任意两个点之间都有边)， 所以最坏情况可能是 O(N^2)   
+
+### [137](https://www.lintcode.com/problem/137/) Clone Graph 克隆图
+
+代码分析 —— 低耦合的清晰代码(**劝分不劝和**)
+
+将整个算法分解为三个步骤: 
+
+1. 找到所有点
+2. 复制所有点 
+3. 复制所有边
+
+以上三个步骤：寻点，复制点，复制边交错在一起也能跑，但可读性就差了很多
+
+```go
+func CloneGraph(node *UndirectedGraphNode) *UndirectedGraphNode {
+	if node == nil {
+		return nil
+	}
+	nodeSet := findNodesByBfs(node)
+	mapping := copyNodes(nodeSet)
+	copyEdges(nodeSet, mapping)
+	return mapping[node]
+}
+
+type nodeSet map[*UndirectedGraphNode]bool
+
+func findNodesByBfs(node *UndirectedGraphNode) nodeSet {
+	queue := []*UndirectedGraphNode{node}
+	visited := nodeSet{
+		node: true,
+	}
+	for len(queue) > 0 {
+		curNode := queue[0]
+		queue = queue[1:]
+		for _, neighbor := range curNode.Neighbors {
+			if visited[neighbor] {
+				continue
+			}
+			queue = append(queue, neighbor)
+			visited[neighbor] = true
+		}
+	}
+	return visited
+}
+
+func copyNodes(nodeSet nodeSet) map[*UndirectedGraphNode]*UndirectedGraphNode {
+	mapping := make(map[*UndirectedGraphNode]*UndirectedGraphNode)
+	for node := range nodeSet {
+		mapping[node] = &UndirectedGraphNode{
+			Label: node.Label,
+		}
+	}
+	return mapping
+}
+
+func copyEdges(nodeSet nodeSet, mapping map[*UndirectedGraphNode]*UndirectedGraphNode) {
+	for node := range nodeSet {
+		newNode := mapping[node]
+		for _, neighbor := range node.Neighbors {
+			newNeighbor := mapping[neighbor]
+			newNode.Neighbors = append(newNode.Neighbors, newNeighbor)
+		}
+	}
+}
+```
+
