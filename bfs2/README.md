@@ -169,3 +169,32 @@ func copyEdges(nodeSet nodeSet, mapping map[*UndirectedGraphNode]*UndirectedGrap
 可以看到延迟放入 visited 会导致 queue 中元素重复，当节点数量更多的时候，可想而知这种重复的情况会呈指数级的增长<br/>
 所以要牢记**访问过一个节点后，就要立即放入已访问的集合中**，这两步不能分开
 
+### BFS 分层 vs 不分层
+
+之前都是不分层的写法，一个 node 跟着一个 node<br/>
+下面提供一种分层的写法
+
+```go
+func FindNodesByBfsWithLevel(node *UndirectedGraphNode) nodeSet {
+	queue := []*UndirectedGraphNode{node}
+	visited := nodeSet{
+		node: true,
+	}
+	for len(queue) > 0 {
+        // 每一次 range 就是一层
+		for range queue {
+			curNode := queue[0]
+			queue = queue[1:]
+			for _, neighbor := range curNode.Neighbors {
+				if visited[neighbor] {
+					continue
+				}
+				visited[neighbor] = true
+				queue = append(queue, neighbor)
+			}
+		}
+	}
+	return visited
+}
+```
+

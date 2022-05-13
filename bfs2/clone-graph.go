@@ -43,6 +43,27 @@ func FindNodesByBfs(node *UndirectedGraphNode) nodeSet {
 	return visited
 }
 
+func FindNodesByBfsWithLevel(node *UndirectedGraphNode) nodeSet {
+	queue := []*UndirectedGraphNode{node}
+	visited := nodeSet{
+		node: true,
+	}
+	for len(queue) > 0 {
+		for range queue {
+			curNode := queue[0]
+			queue = queue[1:]
+			for _, neighbor := range curNode.Neighbors {
+				if visited[neighbor] {
+					continue
+				}
+				visited[neighbor] = true
+				queue = append(queue, neighbor)
+			}
+		}
+	}
+	return visited
+}
+
 func FindNodesByBfsWrong(node *UndirectedGraphNode) nodeSet {
 	queue := []*UndirectedGraphNode{node}
 	visited := nodeSet{}
