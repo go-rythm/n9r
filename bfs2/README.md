@@ -340,3 +340,36 @@ func (p Coord) isValid(grid [][]bool, visited map[Coord]bool) bool {
 }
 ```
 
+### [611](https://www.lintcode.com/problem/611/) Knight Shortest Path
+
+使用去重的 key 是二维的坐标，也可以转换成一维的。key = X * 一列有多少元素 + Y
+
+```go
+func ShortestPath(grid [][]bool, source *Point, destination *Point) int {
+	queue := []Point{*source}
+	cellToDisMap := map[Point]int{
+		*source: 0,
+	}
+
+	for len(queue) > 0 {
+		curP := queue[0]
+		queue = queue[1:]
+		if curP == *destination {
+			return cellToDisMap[curP]
+		}
+		for _, offset := range Offsets {
+			newP := Point{
+				X: curP.X + offset.X,
+				Y: curP.Y + offset.Y,
+			}
+			if !isValid(newP, grid, cellToDisMap) {
+				continue
+			}
+			queue = append(queue, newP)
+			cellToDisMap[newP] = cellToDisMap[curP] + 1
+		}
+	}
+	return -1
+}
+```
+
