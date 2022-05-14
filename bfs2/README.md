@@ -373,3 +373,66 @@ func ShortestPath(grid [][]bool, source *Point, destination *Point) int {
 }
 ```
 
+### 拓扑排序 | Topological Sorting
+
+> 入度(In-degree)：有向图(Directed Graph)中指向当前节点的点的个数(或指向当前节点的边的条数)
+>
+> 拓扑排序并不是传统的排序算法
+>
+>  一个图可能存在多个拓扑序(Topological Order)，也可能不存在任何拓扑序
+
+算法描述：
+
+1. 统计每个点的入度
+2. 将每个入度为 0 的点放入队列(Queue)中作为起始节点
+3. 不断从队列中拿出一个点，去掉这个点的所有连边(指向其他点的边)，其他点的相应的入度减 1
+4. 一旦发现新的入度为 0 的点，丢回队列中
+
+**拓扑排序的四种不同问法**
+
+* 求任意一个拓扑排序
+* 问是否存在拓扑排序
+* 求是否存在且仅存在一个拓扑排序
+* 求字典序最小的拓扑排序
+
+### [616](https://www.lintcode.com/problem/616/) Course Schedule II (问是否存在拓扑排序)
+
+```go
+func FindOrder(numCourses int, prerequisites [][]int) []int {
+	// 构建图，代表（先修课->多个后修课）的映射
+	graph := map[int][]int{}
+	// 每个点的入度
+	inDegree := map[int]int{}
+	for _, v := range prerequisites {
+		graph[v[1]] = append(graph[v[1]], v[0])
+		inDegree[v[0]]++
+	}
+	queue := []int{}
+	for i := 0; i < numCourses; i++ {
+		if _, ok := inDegree[i]; !ok {
+			queue = append(queue, i)
+		}
+	}
+
+	numChoose := 0
+	topoOrder := make([]int, 0, numCourses)
+	for len(queue) > 0 {
+		nowPos := queue[0]
+		queue = queue[1:]
+		topoOrder = append(topoOrder, nowPos)
+		numChoose++
+		for _, v := range graph[nowPos] {
+			inDegree[v]--
+			if inDegree[v] == 0 {
+				queue = append(queue, v)
+			}
+		}
+	}
+
+	if numChoose != numCourses {
+		return []int{}
+	}
+	return topoOrder
+}
+```
+
