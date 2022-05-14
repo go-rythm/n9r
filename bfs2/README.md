@@ -259,3 +259,84 @@ func getNextWords(word string, dict map[string]struct{}) []string {
 }
 ```
 
+### 矩阵中的宽度优先搜索 | BFS in Matrix
+
+### [433](https://www.lintcode.com/problem/433/) Number of Islands
+
+01Matrix + 联通块的个数 -> BFS/DFS
+
+题目解析：
+
+1. 逐行逐列进行遍历
+2. 如果找到一个1，岛屿数量增1
+3. 把所有跟这个1相连的1都找出来。所有这些相连的1代表一个岛。
+4. 回到步骤1继续遍历
+
+```go
+func NumIslands(grid [][]bool) int {
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return 0
+	}
+	islands := 0
+	visited := map[Coord]bool{}
+
+	for i, row := range grid {
+		for j, v := range row {
+			p := Coord{i, j}
+			if v && !visited[p] {
+				islands++
+				bfs(grid, p, visited)
+			}
+		}
+	}
+
+	return islands
+}
+
+func bfs(grid [][]bool, p Coord, visited map[Coord]bool) {
+	queue := []Coord{p}
+	visited[p] = true
+	for len(queue) > 0 {
+		curP := queue[0]
+		queue = queue[1:]
+		for _, d := range Directions {
+			nextP := Coord{
+				x: curP.x + d.x,
+				y: curP.y + d.y,
+			}
+			if !nextP.isValid(grid, visited) {
+				continue
+			}
+			queue = append(queue, nextP)
+			visited[nextP] = true
+		}
+	}
+}
+
+// 上下左右
+var Directions = []Coord{
+	{-1, 0},
+	{1, 0},
+	{0, -1},
+	{0, 1},
+}
+
+type Coord struct {
+	x, y int
+}
+
+func (p Coord) isValid(grid [][]bool, visited map[Coord]bool) bool {
+	n, m := len(grid), len(grid[0])
+	if p.x < 0 || p.x >= n {
+		return false
+	}
+	if p.y < 0 || p.y >= m {
+		return false
+	}
+	if visited[p] {
+		return false
+	}
+	return grid[p.x][p.y]
+}
+```
+
