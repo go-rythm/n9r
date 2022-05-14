@@ -198,3 +198,64 @@ func FindNodesByBfsWithLevel(node *UndirectedGraphNode) nodeSet {
 }
 ```
 
+### [120](https://www.lintcode.com/problem/120/) Word Ladder 单词接龙
+
+首先要生成指定单词的变换列表<br/>
+从第一个单词开始，他的子节点就是它变换列表中的所有单词，以此类推，生成一棵树，求的就是目标节点是 end 的最短距离
+
+getNextWords 的时间复杂度分析<br/>
+两层循环 + 内部构造字符串 = O(26 * L * L) L为每个词的长度
+
+```go
+func LadderLength(start string, end string, dict map[string]struct{}) int {
+	dict[end] = struct{}{}
+	queue := []string{start}
+	visited := map[string]bool{
+		start: true,
+	}
+
+	length := 1
+	for len(queue) > 0 {
+		length++
+		for range queue {
+			word := queue[0]
+			queue = queue[1:]
+			for _, nextWord := range getNextWords(word, dict) {
+				if visited[nextWord] {
+					continue
+				}
+				if nextWord == end {
+					return length
+				}
+				visited[nextWord] = true
+				queue = append(queue, nextWord)
+			}
+		}
+	}
+
+	return 0
+}
+
+func getNextWords(word string, dict map[string]struct{}) []string {
+	alphabet := []rune{}
+	for r := 'a'; r <= 'z'; r++ {
+		alphabet = append(alphabet, r)
+	}
+
+	nextWords := []string{}
+	for i, v := range word {
+		left, right := word[:i], word[i+1:]
+		for _, r := range alphabet {
+			if v == r {
+				continue
+			}
+			newWord := left + string(r) + right
+			if _, ok := dict[newWord]; ok {
+				nextWords = append(nextWords, newWord)
+			}
+		}
+	}
+	return nextWords
+}
+```
+
