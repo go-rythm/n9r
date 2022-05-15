@@ -27,6 +27,7 @@ func BinaryTreePaths(root *TreeNode) slice {
 	return slice(paths)
 }
 
+// 遍历法
 func findPaths(node *TreeNode, path *[]*TreeNode, paths *[]string) {
 	if node == nil {
 		return
@@ -70,4 +71,25 @@ func findNodes(node *TreeNode, nodes *[]*TreeNode) {
 	*nodes = append(*nodes, node)
 	findNodes(node.Left, nodes)
 	findNodes(node.Right, nodes)
+}
+
+// 分治法
+func binaryTreePaths(node *TreeNode) []string {
+	paths := []string{}
+	if node == nil {
+		return paths
+	}
+	if node.Left == nil && node.Right == nil {
+		paths = append(paths, ""+strconv.Itoa(node.Val))
+		return paths
+	}
+
+	for _, leftPath := range binaryTreePaths(node.Left) {
+		paths = append(paths, strconv.Itoa(node.Val)+"->"+leftPath)
+	}
+	for _, rightPath := range binaryTreePaths(node.Right) {
+		paths = append(paths, strconv.Itoa(node.Val)+"->"+rightPath)
+	}
+
+	return paths
 }
