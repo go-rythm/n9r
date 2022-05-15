@@ -589,3 +589,36 @@ func (h *ByteHeap) Pop() any {
 
 ![82E0BE2D-CD7F-416C-9D8F-77652DCB347F](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220515121722.jpeg)
 
+### 相关问题 | Related Questions
+
+* 图上的 BFS
+    * 判断一个图是否是一棵树
+        * http://www.lintcode.com/problem/graph-valid-tree/
+    * 搜索图中最近值为target的点
+       * http://www.lintcode.com/problem/search-graph-nodes/
+    * 无向图连通块
+       * http://www.lintcode.com/problem/connected-component-in-undirected-graph/
+
+* 矩阵上的 BFS
+
+    * 僵尸多少天吃掉所有人
+        * http://www.lintcode.com/problem/zombie-in-matrix/
+
+    * 建邮局问题 Build Post Office II
+        * http://www.lintcode.com/problem/build-post-office-ii/
+
+### 总结 | Conclusion
+
+* 能用 BFS 的一定不要用 DFS (除非面试官特别要求)
+* BFS 的三个使用场景
+    * 连通块问题
+    * 层级遍历问题
+    * 拓扑排序问题
+
+* 是否需要层级遍历
+    * 需要多一重循环
+    * 或者使用 distance 哈希表记录到所有点的距离
+
+* 矩阵坐标变换数组
+    * deltaX, deltaY
+    * inBound / isValid
