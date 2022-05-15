@@ -1,5 +1,2 @@
 github.com/ysmood/got v0.29.1 h1:7TNTm3Bw5kdBGXFp04qnZ9DqlZ1XS1z1JdeobeJY6Mo=
 github.com/ysmood/got v0.29.1/go.mod h1:pE1l4LOwOBhQg6A/8IAatkGp7uZjnalzrZolnlhhMgY=
-github.com/ysmood/got/lib/example v0.0.0-20220509003503-93dc0964647b h1:s/tB6rf4Lu2N2DjPeMRYwp0jk2C07gKUEBKFFWLkyfE=
-github.com/ysmood/got/lib/example v0.0.0-20220509003503-93dc0964647b/go.mod h1:GG47rLhRF3+wD3yRPuWN73cQr4L0d+sk0TiXOBPgtMs=
-github.com/ysmood/gotrace v0.6.0 h1:SyI1d4jclswLhg7SWTL6os3L1WOKeNn/ZtzVQF8QmdY=
