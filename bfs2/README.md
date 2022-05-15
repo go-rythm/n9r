@@ -490,3 +490,102 @@ func SequenceReconstruction(org []int, seqs [][]int) bool {
 
 ![3AF905F8B3A17838BD6801402D622330](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220515004500.jpeg)
 
+### [892](https://www.lintcode.com/problem/892/) 外星人字典
+
+需要处理的特殊情况 ["abc", "ab"]，这种是不合法的，无论是在地球上还是在外星上
+
+根据题目要求：`一个字符串中的字母默认是同一等级的，且按照人类字典序排序。`，本题中应该使用优先级队列
+
+```go
+func AlienOrder(words []string) string {
+	// 初始化图
+	graph := map[byte][]byte{}
+	for _, word := range words {
+		for _, r := range word {
+			graph[byte(r)] = []byte{}
+		}
+	}
+
+	// 初始化图中的边
+	for i := 0; i < len(words)-1; i++ {
+		min := len(words[i])
+		if len(words[i+1]) < min {
+			min = len(words[i+1])
+		}
+
+		for j := 0; j < min; j++ {
+			if words[i][j] != words[i+1][j] {
+				graph[words[i][j]] = append(graph[words[i][j]], words[i+1][j])
+				break
+			}
+			if j == min-1 {
+				if len(words[i]) > len(words[j]) {
+					return ""
+				}
+			}
+		}
+	}
+
+	// 初始化入度
+	inDegrees := map[byte]int{}
+	for node := range graph {
+		inDegrees[node] = 0
+	}
+	for _, neighbors := range graph {
+		for _, neighbor := range neighbors {
+			inDegrees[neighbor]++
+		}
+	}
+
+	queue := &ByteHeap{}
+	heap.Init(queue)
+	for node, inDegree := range inDegrees {
+		if inDegree == 0 {
+			heap.Push(queue, node)
+		}
+	}
+
+	topoOrder := []byte{}
+	for queue.Len() > 0 {
+		curNode := heap.Pop(queue).(byte)
+		topoOrder = append(topoOrder, curNode)
+
+		for _, neighbor := range graph[curNode] {
+			inDegrees[neighbor]--
+			if inDegrees[neighbor] == 0 {
+				heap.Push(queue, neighbor)
+			}
+		}
+	}
+
+	if len(topoOrder) != len(graph) {
+		return ""
+	}
+
+	return string(topoOrder)
+}
+
+// A ByteHeap is a min-heap of bytes.
+type ByteHeap []byte
+
+func (h ByteHeap) Len() int           { return len(h) }
+func (h ByteHeap) Less(i, j int) bool { return h[i] < h[j] }
+func (h ByteHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *ByteHeap) Push(x any) {
+	// Push and Pop use pointer receivers because they modify the slice's length,
+	// not just its contents.
+	*h = append(*h, x.(byte))
+}
+
+func (h *ByteHeap) Pop() any {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+```
+
+![82E0BE2D-CD7F-416C-9D8F-77652DCB347F](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220515121722.jpeg)
+
