@@ -56,3 +56,75 @@
 
 将递归和非递归理解为算法的**一种实现方式**而不是算法
 
+### [596](http://www.lintcode.com/problem/minimum-subtree/) 最小子树
+
+一棵有n个节点的二叉树有多少棵子树？  
+n棵，每个节点都可以作为子树的根节点
+
+#### 使用了全局变量的分治法
+
+**全局变量的坏处**
+
+* 函数不“纯粹”，容易出 Bug 
+* 不利于多线程化，对共享变量加锁带来效率下降
+
+```go
+var (
+	minSum  int
+	minRoot *TreeNode
+)
+
+/**
+ * @param root: the root of binary tree
+ * @return: the root of the minimum subtree
+ */
+func FindSubtree(root *TreeNode) *TreeNode {
+	minSum = math.MaxInt
+	minRoot = nil
+	getTreeSum(root)
+	return minRoot
+}
+
+func getTreeSum(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	leftWeight := getTreeSum(root.Left)
+	rightWeight := getTreeSum(root.Right)
+	rootWeight := leftWeight + rightWeight + root.Val
+
+	if rootWeight < minSum {
+		minSum = rootWeight
+		minRoot = root
+	}
+	return rootWeight
+}
+```
+
+#### 纯分治的方法
+
+```go
+func FindSubtree2(root *TreeNode) *TreeNode {
+	_, subtree, _ := helper(root)
+	return subtree
+}
+
+func helper(root *TreeNode) (int, *TreeNode, int) {
+	if root == nil {
+		return math.MaxInt, nil, 0
+	}
+	leftMin, leftSubtree, leftWeight := helper(root.Left)
+	rightMin, rightSubtree, rightWeight := helper(root.Right)
+
+	rootWeight := leftWeight + rightWeight + root.Val
+	if leftMin < rightMin && leftMin < rootWeight {
+		return leftMin, leftSubtree, rootWeight
+	}
+	if rightMin < leftMin && rightMin < rootWeight {
+		return rightMin, rightSubtree, rootWeight
+	}
+	return rootWeight, root, rootWeight
+}
+```
+
