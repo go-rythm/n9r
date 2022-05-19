@@ -5,7 +5,7 @@ import (
 
 	"github.com/ysmood/got"
 
-	"github.com/go-rythm/ninechapter/bfs"
+	"github.com/go-rythm/n9r/bfs"
 )
 
 func TestLevelOrder3(t *testing.T) {

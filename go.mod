@@ -1,4 +1,4 @@
-module github.com/go-rythm/ninechapter
+module github.com/go-rythm/n9r
 
 go 1.18
 

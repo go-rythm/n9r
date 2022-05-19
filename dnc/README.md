@@ -26,8 +26,7 @@
 
 ### 独孤九剑 —— 破枪式
 
-* 碰到二叉树的问题，就想想整棵树在该问题上的结果
-* 和左右儿子在该问题上的结果之间的联系是什么
+**碰到二叉树的问题，就想想整棵树在该问题上的结果和左右儿子在该问题上的结果之间的联系是什么**
 
 ### 二叉树考点剖析
 
@@ -56,7 +55,7 @@
 
 将递归和非递归理解为算法的**一种实现方式**而不是算法
 
-### [596](http://www.lintcode.com/problem/minimum-subtree/) 最小子树
+### [596](http://www.lintcode.com/problem/minimum-subtree/) 最小子树（第一类）
 
 一棵有n个节点的二叉树有多少棵子树？  
 n棵，每个节点都可以作为子树的根节点
@@ -125,6 +124,121 @@ func helper(root *TreeNode) (int, *TreeNode, int) {
 		return rightMin, rightSubtree, rootWeight
 	}
 	return rootWeight, root, rootWeight
+}
+```
+
+### [474](https://www.lintcode.com/problem/474) 最近公共祖先 II（第一类）
+
+问法1：如果有父指针
+
+使用 HashSet 记录从 A 到根的所有点，访问从 B 到根的所有点，第一个出现在 HashSet 中的就是
+
+```go
+func LowestCommonAncestorII(root, A, B *ParentTreeNode) *ParentTreeNode {
+	parentSet := map[*ParentTreeNode]bool{}
+	cur := A
+	for cur != nil {
+		parentSet[cur] = true
+		cur = cur.Parent
+	}
+	cur = B
+	for cur != nil {
+		if parentSet[cur] {
+			return cur
+		}
+		cur = cur.Parent
+	}
+	return nil
+}
+```
+
+### [88](https://www.lintcode.com/problem/88) 最近公共祖先（第一类）
+
+问法2：两个节点都在树里
+
+给你 root, A, B 三个点的信息，A和B保证都在 root 的下面
+
+定义返回值:
+
+* A,B 都存在 -> return LCA(A,B) 
+* 只有A --> return A 
+* 只有B --> return B
+* A,B 都不存在 --> return nil
+
+> 递归时间复杂度：递归一次 * 次数
+>
+> 递归空间复杂度：递归一次 + 递归深度
+
+```go
+func LowestCommonAncestor(root, A, B *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	// 如果root为A或B，立即返回，无需继续向下寻找
+	if root == A || root == B {
+		return root
+	}
+	// 分别去左右子树寻找A和B
+	left := LowestCommonAncestor(root.Left, A, B)
+	right := LowestCommonAncestor(root.Right, A, B)
+
+	// 如果A、B分别存于两棵子树，root为LCA，返回root
+	if left != nil && right != nil {
+		return root
+	}
+	// 左子树有一个点或者左子树有LCA
+	if left != nil {
+		return left
+	}
+	// 右子树有一个点或者右子树有LCA
+	if right != nil {
+		return right
+	}
+	// 左右子树啥都没有
+	return nil
+}
+```
+
+### [578](http://www.lintcode.com/problem/lowest-common-ancestor-iii/) 最近公共祖先 III（第一类）
+
+问法3：两个节点不一定都在树里
+
+root, p, q，但是不保证 root 里一定有 p 和 q
+
+```go
+func LowestCommonAncestor3(root, A, B *TreeNode) *TreeNode {
+	a, b, lca := helper3(root, A, B)
+	if a && b {
+		return lca
+	}
+	return nil
+}
+
+func helper3(root, A, B *TreeNode) (bool, bool, *TreeNode) {
+	if root == nil {
+		return false, false, nil
+	}
+
+	leftA, leftB, leftNode := helper3(root.Left, A, B)
+	rightA, rightB, rightNode := helper3(root.Right, A, B)
+
+	a := leftA || rightA || root == A
+	b := leftB || rightB || root == B
+
+	if root == A || root == B {
+		return a, b, root
+	}
+
+	if leftNode != nil && rightNode != nil {
+		return a, b, root
+	}
+	if leftNode != nil {
+		return a, b, leftNode
+	}
+	if rightNode != nil {
+		return a, b, rightNode
+	}
+	return a, b, nil
 }
 ```
 
