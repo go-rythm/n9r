@@ -313,3 +313,45 @@ func flattenAndReturnLastNode(root *TreeNode) *TreeNode {
 * O(LogN) 的时间内实现增删查改
 * O(LogN) 的时间内实现找最大找最小
 * O(LogN) 的时间内实现找比某个数小的最大值(upperBound)和比某个数大的最小值(lowerBound)
+
+### [902](https://www.lintcode.com/problem/kth-smallest-element-in-a-bst/) BST中第K小的元素
+
+时间复杂度分析：**O(k + h)**
+
+当 k 是 1 的时候 => O(h)
+
+当 k 是 n 的时候 => O(n) 
+
+k和h两者取大值
+
+```go
+func KthSmallest(root *TreeNode, k int) int {
+	var stack []*TreeNode
+
+	for root != nil {
+		stack = append(stack, root)
+		root = root.Left
+	}
+
+	for i := 0; i < k-1; i++ {
+		node := stack[len(stack)-1]
+
+		if node.Right == nil {
+			node = stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			for len(stack) != 0 && stack[len(stack)-1].Right == node {
+				node = stack[len(stack)-1]
+				stack = stack[:len(stack)-1]
+			}
+		} else {
+			node = node.Right
+			for node != nil {
+				stack = append(stack, node)
+				node = node.Left
+			}
+		}
+	}
+	return stack[len(stack)-1].Val
+}
+```
+
