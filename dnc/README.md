@@ -242,3 +242,38 @@ func helper3(root, A, B *TreeNode) (bool, bool, *TreeNode) {
 }
 ```
 
+### [453](http://www.lintcode.com/problem/flatten-binary-tree-to-linked-list/) 将二叉树拆成链表（第二类）
+
+将二叉树拆成链表。进行前序遍历，将上一个节点的右指针指向当前节点。
+
+![flatten](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220519225139.png)
+
+```go
+func Flatten(root *TreeNode) {
+	flattenAndReturnLastNode(root)
+}
+
+func flattenAndReturnLastNode(root *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	leftLast := flattenAndReturnLastNode(root.Left)
+	rightLast := flattenAndReturnLastNode(root.Right)
+
+	if leftLast != nil {
+		leftLast.Right = root.Right
+		root.Right = root.Left
+		root.Left = nil
+	}
+
+	if rightLast != nil {
+		return rightLast
+	}
+	if leftLast != nil {
+		return leftLast
+	}
+	return root
+}
+```
+
