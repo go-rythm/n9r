@@ -277,3 +277,39 @@ func flattenAndReturnLastNode(root *TreeNode) *TreeNode {
 }
 ```
 
+### 二叉搜索树 | Binary Search Tree
+
+**BST 基本性质**
+
+* 从定义出发：
+    * 左子树都比根节点小
+    * 右子树都不小于根节点
+
+* 从效果出发
+    * 中序遍历in-order traversal是“不下降”序列
+
+* 性质：
+    * 如果一棵二叉树的中序遍历不是“不下降”序列，则一定不是BST
+    
+    * 如果一棵二叉树的中序遍历是不下降，也未必是BST
+        * 比如下面这棵树就不是 BST，但是它的中序遍历是不下降序列。
+    
+        ```sh
+            1
+          /   \
+         1     1
+        ```
+    
+* 高度：
+  
+    * 同样是最坏 O(n) 最好 O(logn)，用 O(h) 表示更合适
+    * 只有 Balanced Binary Tree (平衡二叉树) 才是 O(logn)
+
+
+### 红黑树 | Red-black Tree
+
+红黑树是一种 Balanced BST
+
+* O(LogN) 的时间内实现增删查改
+* O(LogN) 的时间内实现找最大找最小
+* O(LogN) 的时间内实现找比某个数小的最大值(upperBound)和比某个数大的最小值(lowerBound)
