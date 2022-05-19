@@ -305,6 +305,18 @@ func flattenAndReturnLastNode(root *TreeNode) *TreeNode {
     * 同样是最坏 O(n) 最好 O(logn)，用 O(h) 表示更合适
     * 只有 Balanced Binary Tree (平衡二叉树) 才是 O(logn)
 
+### BST **基本操作**
+
+**Build** - [1359. Convert Sorted Array to Binary Search Tree](https://www.lintcode.com/problem/convert-sorted-array-to-binary-search-tree/description) 
+
+**Insert** - [85. Insert Node in a Binary Search Tree](https://www.lintcode.com/problem/insert-node-in-a-binary-search-tree/description)
+
+**Search** - [1524. Search in a Binary Search Tree](https://www.lintcode.com/problem/search-in-a-binary-search-tree/description)
+
+**Delete** - [701. Trim a Binary Search Tree](https://www.lintcode.com/problem/trim-a-binary-search-tree/description)
+
+**Iterate** - [86. Binary Search Tree Iterator](https://www.lintcode.com/problem/binary-search-tree-iterator/description)
+
 
 ### 红黑树 | Red-black Tree
 
@@ -314,7 +326,7 @@ func flattenAndReturnLastNode(root *TreeNode) *TreeNode {
 * O(LogN) 的时间内实现找最大找最小
 * O(LogN) 的时间内实现找比某个数小的最大值(upperBound)和比某个数大的最小值(lowerBound)
 
-### [902](https://www.lintcode.com/problem/kth-smallest-element-in-a-bst/) BST中第K小的元素
+### [902](https://www.lintcode.com/problem/kth-smallest-element-in-a-bst/) BST中第K小的元素（第三类）
 
 时间复杂度分析：**O(k + h)**
 
@@ -352,6 +364,99 @@ func KthSmallest(root *TreeNode, k int) int {
 		}
 	}
 	return stack[len(stack)-1].Val
+}
+```
+
+### 902 Follow up: 二叉树经常被修改
+
+如何优化 kthSmallest 这个操作?
+
+优化方法
+
+在 TreeNode 中增加一个 counter，代表整个树的节点个数<br/>
+也可以用一个 HashMap<TreeNode, Integer> 来存储某个节点为代表的子树的节点个数<br/>
+在增删查改的过程中记录不断更新受影响节点的 counter<br/>
+在 kthSmallest 的实现中用类似 Quick Select 的算法去找到 kth smallest element<br/>
+时间复杂度为 O(h)，h 为树的高度。
+
+### [900](https://www.lintcode.com/problem/closest-binary-search-tree-value/) 二叉搜索树中最接近的值（第三类）
+
+递归
+
+```go
+func ClosestValue(root *TreeNode, target float64) int {
+	if root == nil {
+		return 0
+	}
+	lowerNode := lowerBound(root, target)
+	upperNode := upperBound(root, target)
+	if lowerNode == nil {
+		return upperNode.Val
+	}
+	if upperNode == nil {
+		return lowerNode.Val
+	}
+	if target-float64(lowerNode.Val) > float64(upperNode.Val)-target {
+		return upperNode.Val
+	}
+	return lowerNode.Val
+}
+
+func lowerBound(root *TreeNode, target float64) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if target < float64(root.Val) {
+		return lowerBound(root.Left, target)
+	}
+
+	lowerNode := lowerBound(root.Right, target)
+	if lowerNode != nil {
+		return lowerNode
+	}
+	return root
+}
+
+func upperBound(root *TreeNode, target float64) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if target >= float64(root.Val) {
+		return upperBound(root.Right, target)
+	}
+
+	upperNode := upperBound(root.Left, target)
+	if upperNode != nil {
+		return upperNode
+	}
+	return root
+}
+```
+
+非递归
+
+```go
+func ClosestValue(root *TreeNode, target float64) int {
+	upper := root
+	lower := root
+	for root != nil {
+		if target < float64(root.Val) {
+			upper = root
+			root = root.Left
+		} else if target > float64(root.Val) {
+			lower = root
+			root = root.Right
+		} else {
+			return root.Val
+		}
+	}
+	if math.Abs(float64(upper.Val)-target) < math.Abs(float64(lower.Val)-target) {
+		return upper.Val
+	} else {
+		return lower.Val
+	}
 }
 ```
 
