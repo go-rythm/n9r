@@ -568,3 +568,12 @@ func (s *sol) isLowerCloser(target float64) bool {
 }
 ```
 
+### Related Questions
+
+* Search Range in Binary Search Tree
+    * http://www.lintcode.com/problem/search-range-in-binary-search-tree/
+* Insert Node in a Binary Search Tree
+    * http://www.lintcode.com/problem/insert-node-in-a-binary-search-tree/
+* Remove Node in a Binary Search Tree
+    * http://www.lintcode.com/problem/remove-node-in-binary-search-tree/
+* http://www.mathcs.emory.edu/~cheung/Courses/171/Syllabus/9-BinTree/BST-delete.html
