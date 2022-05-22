@@ -60,3 +60,29 @@ func dfs2(nums []int, index int, subset []int, res *[][]int) {
 }
 ```
 
+### [18](https://www.lintcode.com/problem/subsets-ii) 子集 II
+
+列表中可能具有重复数字
+
+```go
+func SubsetsWithDup(nums []int) [][]int {
+	sorted := append([]int{}, nums...)
+	sort.Ints(sorted)
+	res := new([][]int)
+	dfsWithDup(sorted, 0, []int{}, res)
+	return *res
+}
+
+func dfsWithDup(nums []int, index int, subset []int, res *[][]int) {
+	*res = append(*res, append([]int{}, subset...))
+	for i := index; i < len(nums); i++ {
+		if i != index && nums[i] == nums[i-1] {
+			continue
+		}
+		subset = append(subset, nums[i])
+		dfsWithDup(nums, i+1, subset, res)
+		subset = subset[:len(subset)-1]
+	}
+}
+```
+
