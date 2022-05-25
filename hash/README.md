@@ -13,7 +13,7 @@
 
 时间复杂度：`O(size of key)` O(L)
 
- ![hash](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220524001404.jpeg)
+ ![hash](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220524001404.jpeg)
 
 ### 开哈希与闭哈希
 
@@ -27,7 +27,7 @@
 
 闭哈希在删除元素注意需要把位置置为`deleted`状态，防止查找时找不到因冲突而放到后面的元素
 
-![closedhash](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220524001951.jpeg)
+![closedhash](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220524001951.jpeg)
 
 ### [128](https://www.lintcode.com/problem/hash-function) 哈希函数
 

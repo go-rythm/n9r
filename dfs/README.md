@@ -37,7 +37,7 @@ func dfs(nums []int, index int, subset []int, res *[][]int) {
 
 更通用的解法
 
-![subset](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220522172431.jpeg)
+![subset](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220522172431.jpeg)
 
 ```go
 func Subsets2(nums []int) [][]int {

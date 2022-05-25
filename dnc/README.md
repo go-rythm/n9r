@@ -51,7 +51,7 @@
 
 ### 一张图搞明白:递归，DFS，回溯，遍历，分治，迭代
 
-![5F95BDD5-4B52-4F9E-8EFA-1668E43EE7B3](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220517230556.jpeg)
+![5F95BDD5-4B52-4F9E-8EFA-1668E43EE7B3](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220517230556.jpeg)
 
 将递归和非递归理解为算法的**一种实现方式**而不是算法
 
@@ -246,7 +246,7 @@ func helper3(root, A, B *TreeNode) (bool, bool, *TreeNode) {
 
 将二叉树拆成链表。进行前序遍历，将上一个节点的右指针指向当前节点。
 
-![flatten](https://gitee.com/luxcgo/imgs4md/raw/master/img/20220519225139.png)
+![flatten](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220519225139.png)
 
 ```go
 func Flatten(root *TreeNode) {
