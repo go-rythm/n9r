@@ -118,6 +118,8 @@ func dfs(dict []string, digits string, idx int, path []rune, paths *[]string) {
 
 ### [90](https://www.lintcode.com/problem/k-sum-ii/) k Sum II, k数和II
 
+**K个元素的组合，和为target，数字不可以重复用**
+
 ![61988AC5-0F15-4FBC-9AB5-4DE6557A33BF](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605001438.jpeg)
 
  <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605001523.jpeg" alt="77AEA523-EFEA-437A-907A-DD95E276F97E" style="zoom:67%;" />
@@ -150,6 +152,54 @@ func dfsKSumII(a []int, k int, target int, idx int, subset []int, subsets *[][]i
 		dfsKSumII(a, k-1, target-a[i], i+1, subset, subsets)
 		subset = subset[:len(subset)-1]
 	}
+}
+```
+
+### [135](https://www.lintcode.com/problem/combination-sum/) 数字组合
+
+![E2164851-F580-4B1C-82F9-848ECE6759DE](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605192854.jpeg)
+
+ <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605192957.jpeg" alt="C0D35F89-4694-448E-B922-0EC9588B8CDD" style="zoom:67%;" />
+
+```go
+func CombinationSum(candidates []int, target int) [][]int {
+	subsets := [][]int{}
+	if len(candidates) == 0 {
+		return subsets
+	}
+	dict := removeDuplicatesAndSort(candidates)
+	dfsCombinationSum(dict, target, 0, nil, &subsets)
+	return subsets
+}
+
+func dfsCombinationSum(dict []int, target int, idx int, subset []int, subsets *[][]int) {
+	if target == 0 {
+		*subsets = append(*subsets, append([]int{}, subset...))
+	}
+	for i := idx; i < len(dict); i++ {
+		if target < dict[i] {
+			break
+		}
+		subset = append(subset, dict[i])
+		dfsCombinationSum(dict, target-dict[i], i, subset, subsets)
+		subset = subset[:len(subset)-1]
+	}
+}
+
+func removeDuplicatesAndSort(nums []int) []int {
+	n := len(nums)
+	if n == 0 {
+		return nums
+	}
+	sort.Ints(nums)
+	slow := 1
+	for fast := 1; fast < n; fast++ {
+		if nums[fast] != nums[fast-1] {
+			nums[slow] = nums[fast]
+			slow++
+		}
+	}
+	return nums[:slow]
 }
 ```
 
