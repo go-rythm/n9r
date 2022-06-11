@@ -203,3 +203,152 @@ func removeDuplicatesAndSort(nums []int) []int {
 }
 ```
 
+### 排列 Permutation
+
+### 排列要点
+
+```sh
+[a, b, c]的所有排列(全排列)为:[a, b, c], [a, c, b], [b, a, c] ], [b, c, a], [c, a, b], [c, b, a]
+```
+
+**问题模型**
+
+求出所有满足条件的“排列”。
+
+**判断条件**
+
+组合中的元素是顺序“相关”的
+
+**时间复杂度**
+
+与 n! 相关 (比如，[a, b, c]的所有排列有`3! = 3*2*1 = 6种`) <br/>
+O(方案个数 * 构造每个方案的时间) = O(n! * n)
+
+### 排列图解(求出 N 个数组成的全排列)
+
+![0D814041-0C6D-490A-B7F6-7E0318FB8EE3](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611222738.jpeg)
+
+### [10](https://www.lintcode.com/problem/string-permutation-ii/) String Permutation II 字符串的不同排列
+
+![47537D55-F695-4826-8528-69EA266E0B89](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224025.jpeg)
+
+ <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224045.jpeg" alt="8586B77D-C703-4495-960F-91E614019F66" style="zoom:67%;" />
+
+```go
+func StringPermutation(str string) []string {
+	permutations := []string{}
+	if str == "" {
+		return permutations
+	}
+	chars := []rune(str)
+	sort.Slice(chars, func(i, j int) bool {
+		return chars[i] < chars[j]
+	})
+
+	visited := make([]bool, len(chars))
+	stringPermutationDfs(chars, visited, []rune{}, &permutations)
+	return permutations
+}
+
+func stringPermutationDfs(chars []rune, visited []bool, permutation []rune, permutations *[]string) {
+	if len(permutation) == len(chars) {
+		*permutations = append(*permutations, string(permutation))
+	}
+
+	for i, char := range chars {
+		if visited[i] {
+			continue
+		}
+
+		if i > 0 && char == chars[i-1] && !visited[i-1] {
+			continue
+		}
+
+		visited[i] = true
+		permutation = append(permutation, char)
+		stringPermutationDfs(chars, visited, permutation, permutations)
+		permutation = permutation[:len(permutation)-1]
+
+		visited[i] = false
+	}
+}
+```
+
+### 在已知的图或树上遍历
+
+- 字母矩阵(Character Matrix)
+- 词语接龙(Word Ladder)
+
+### BFS+DFS题目解析
+
+![C5C7F410-1474-4737-8EA0-7587677AEF5D](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224402.jpeg) 
+
+### [132](https://www.lintcode.com/problem/word-search-ii/) Word Search II 单词搜索 II 
+
+**字母矩阵(Character Matrix)**
+
+![3A9592A6-C0A9-46EC-B6D5-3172F4FBB2A8](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224316.jpeg)
+
+```go
+func WordSearchII(board [][]byte, words []string) []string {
+	var res []string
+	if len(board) == 0 || len(board[0]) == 0 {
+		return res
+	}
+
+	visited := make([][]bool, len(board))
+	for i := range visited {
+		visited[i] = make([]bool, len(board[0]))
+	}
+	wordSet := make(set)
+	prefixSet := make(set)
+	resSet := make(set)
+
+	for _, word := range words {
+		wordSet[word] = true
+		for i := 0; i < len(word); i++ {
+			prefixSet[string(word[:i+1])] = true
+		}
+	}
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			visited[i][j] = true
+			wordSearchIIDfs(board, visited, i, j, string(board[i][j]), wordSet, prefixSet, resSet)
+			visited[i][j] = false
+		}
+	}
+
+	res = make([]string, 0, len(resSet))
+	for k := range resSet {
+		res = append(res, k)
+	}
+	return res
+}
+
+func wordSearchIIDfs(board [][]byte, visited [][]bool, x int, y int, word string, wordSet set, prefixSet set, resSet set) {
+	if !prefixSet[word] {
+		return
+	}
+
+	if wordSet[word] {
+		resSet[word] = true
+	}
+
+	for i := 0; i < len(Directions); i++ {
+		adjX := x + Directions[i].x
+		adjY := y + Directions[i].y
+		if !inside(board, adjX, adjY) || visited[adjX][adjY] {
+			continue
+		}
+		visited[adjX][adjY] = true
+		wordSearchIIDfs(board, visited, adjX, adjY, word+string(board[adjX][adjY]), wordSet, prefixSet, resSet)
+		visited[adjX][adjY] = false
+	}
+}
+
+func inside(board [][]byte, x, y int) bool {
+	return x >= 0 && x < len(board) && y >= 0 && y < len(board[0])
+}
+```
+

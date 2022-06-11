@@ -1,5 +1,7 @@
 package dfs2
 
+// https://www.jiuzhang.com/problem/string-permutation-ii/
+
 import "sort"
 
 func StringPermutation(str string) []string {
