@@ -115,3 +115,59 @@ func divideConquer(triangle [][]int, x, y int, memo map[struct{ x, y int }]int) 
     * 记忆化搜索是动态规划的一种实现方式
     * 记忆化搜索是用搜索的方式实现了动态规划
     * 因此记忆化搜索，就是动态规划
+
+### [1300](https://www.lintcode.com/problem/bash-game/) 巴什博弈
+
+记忆化搜索非常适合博弈型动态规划
+
+```go
+func CanWinBash(n int) bool {
+	memo := make(map[int]bool)
+	return memoSearch(n, memo)
+}
+
+func memoSearch(n int, memo map[int]bool) bool {
+	if n <= 3 {
+		return true
+	}
+	if v, ok := memo[n]; ok {
+		return v
+	}
+	for i := 1; i < 4; i++ {
+		if !memoSearch(n-i, memo) {
+			memo[n] = true
+			return true
+		}
+	}
+	memo[n] = false
+	return false
+}
+```
+
+#### 这份代码有什么问题?
+
+**StackOverflow**
+
+* n 可能很大，深度达到 O(n) 级别
+* <span style="color:red">**如果时间复杂度和递归深度都是 O(n) 级别会栈溢出**</span>
+* 如果时间复杂度是 O(n^2) 级别，递归深度是 O(n) 级别就不会溢出
+
+#### 解决思路
+
+```
+通过记忆化搜索的代码得到 n=1,2,3,4,... 的小数据结果
+找规律，发现 n % 4 == 0 是 false，其他是 true
+进一步想到 n % 4 == 0 时，先手取 x，后手取 4-x 先手必败
+反之先手取 n % 4 个石子就让对手面对必败局面
+```
+
+```go
+func CanWinBash(n int) bool {
+	return n%4 != 0
+}
+```
+
+### 记忆化搜索的缺点
+
+不适合解决 O(n) 时间复杂度的 DP 问题<br/>
+因为会有 StackOverflow 的风险
