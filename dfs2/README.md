@@ -11,7 +11,7 @@
 
 ### 图的BFS
 
-![graphbfs](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220604214803.jpeg)
+![graphbfs](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220604214803.jpeg)
 
 ### DFS深度优先搜索回顾
 
@@ -87,7 +87,7 @@ O(方案个数 * 构造每个方案的时间) = O(2^n * n)
 
 路径 = 子集 = 图中任意点出发到任意点结束的一条路径
 
-![80B2BAF7-6DAF-4991-83CB-B859EBF48954](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220604221145.jpeg)
+![80B2BAF7-6DAF-4991-83CB-B859EBF48954](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220604221145.jpeg)
 
 ### [425](https://www.lintcode.com/problem/425/) 电话号码的字母组合
 
@@ -120,9 +120,9 @@ func dfs(dict []string, digits string, idx int, path []rune, paths *[]string) {
 
 **K个元素的组合，和为target，数字不可以重复用**
 
-![61988AC5-0F15-4FBC-9AB5-4DE6557A33BF](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605001438.jpeg)
+![61988AC5-0F15-4FBC-9AB5-4DE6557A33BF](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220605001438.jpeg)
 
- <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605001523.jpeg" alt="77AEA523-EFEA-437A-907A-DD95E276F97E" style="zoom:67%;" />
+ <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220605001523.jpeg" alt="77AEA523-EFEA-437A-907A-DD95E276F97E" style="zoom:67%;" />
 
 ```go
 func KSumII(a []int, k int, target int) [][]int {
@@ -157,9 +157,9 @@ func dfsKSumII(a []int, k int, target int, idx int, subset []int, subsets *[][]i
 
 ### [135](https://www.lintcode.com/problem/combination-sum/) 数字组合
 
-![E2164851-F580-4B1C-82F9-848ECE6759DE](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605192854.jpeg)
+![E2164851-F580-4B1C-82F9-848ECE6759DE](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220605192854.jpeg)
 
- <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220605192957.jpeg" alt="C0D35F89-4694-448E-B922-0EC9588B8CDD" style="zoom:67%;" />
+ <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220605192957.jpeg" alt="C0D35F89-4694-448E-B922-0EC9588B8CDD" style="zoom:67%;" />
 
 ```go
 func CombinationSum(candidates []int, target int) [][]int {
@@ -226,13 +226,13 @@ O(方案个数 * 构造每个方案的时间) = O(n! * n)
 
 ### 排列图解(求出 N 个数组成的全排列)
 
-![0D814041-0C6D-490A-B7F6-7E0318FB8EE3](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611222738.jpeg)
+![0D814041-0C6D-490A-B7F6-7E0318FB8EE3](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220611222738.jpeg)
 
 ### [10](https://www.lintcode.com/problem/string-permutation-ii/) String Permutation II 字符串的不同排列
 
-![47537D55-F695-4826-8528-69EA266E0B89](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224025.jpeg)
+![47537D55-F695-4826-8528-69EA266E0B89](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220611224025.jpeg)
 
- <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224045.jpeg" alt="8586B77D-C703-4495-960F-91E614019F66" style="zoom:67%;" />
+ <img src="https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220611224045.jpeg" alt="8586B77D-C703-4495-960F-91E614019F66" style="zoom:67%;" />
 
 ```go
 func StringPermutation(str string) []string {
@@ -281,13 +281,13 @@ func stringPermutationDfs(chars []rune, visited []bool, permutation []rune, perm
 
 ### BFS+DFS题目解析
 
-![C5C7F410-1474-4737-8EA0-7587677AEF5D](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224402.jpeg) 
+![C5C7F410-1474-4737-8EA0-7587677AEF5D](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220611224402.jpeg) 
 
 ### [132](https://www.lintcode.com/problem/word-search-ii/) Word Search II 单词搜索 II 
 
 **字母矩阵(Character Matrix)**
 
-![3A9592A6-C0A9-46EC-B6D5-3172F4FBB2A8](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img20220611224316.jpeg)
+![3A9592A6-C0A9-46EC-B6D5-3172F4FBB2A8](https://raw.githubusercontent.com/luxcgo/imgs4md/master/img/20220611224316.jpeg)
 
 ```go
 func WordSearchII(board [][]byte, words []string) []string {
